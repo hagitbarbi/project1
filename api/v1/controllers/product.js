@@ -40,7 +40,7 @@ Getproductbyid:(req,res)=>{
 
 Addproduct:(req,res)=>{
     const {pname,price,pdesc,picname}=req.body;
-    connection.query("INSERT INTO t_products (pname,price,pdesc,picname) VALUES " + ({pname,price,pdesc,picname}),function(err,rows,fields){
+    connection.query("INSERT INTO t_products (pname,price,pdesc,picname) VALUES " + '(pname,price,pdesc,picname)',function(err,rows,fields){
         if(err)
         {
            console.log(err.message);
@@ -75,7 +75,27 @@ Deleteproduct:(req,res)=>{
  });
 },
     
-Updateproduct:(req,res)=>{return res.status(200).json({Msg:"update product by id"+req.params.id})}
+Updateproduct:(req,res)=>{
+    const {pname,price,pdesc,picname}=req.body;
+     connection.query("UPDATE t_products set pname ="+'(pname)'+" where pid="+req.params.id,function(err,rows,fields){
+        if(err)
+        {
+            console.log(err.message);
+            return res.status(500).json({msg:err.message});
+    
+        }
+        else
+        {
+        console.log("ok");
+        return res.status(200).json(rows);
+        }
+    
+    
+     });
+   },
+  
+    
+    
 
 
 
